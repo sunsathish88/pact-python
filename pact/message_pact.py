@@ -171,6 +171,10 @@ class MessagePact(Broker):
 
         self._message_process = Popen(command)
 
+    def verify(self, func_to_call):
+        """Verify our target method with our content."""
+        self.result = func_to_call(self._messages[0]['contents'])
+
     def _insert_message_if_complete(self):
         """
         Insert a new message if current message is complete.
@@ -185,8 +189,13 @@ class MessagePact(Broker):
             self._messages.insert(0, {})
 
     def __enter__(self):
-        """Enter a Python context. This function is required for context manager to work."""
-        pass
+        """
+        Enter a Python context. This function is required for context manager to work.
+
+        Calls our handler function with our payload
+        """
+        if hasattr(self, 'func_to_call') and callable(self.func_to_call):
+            self.result = self.func_to_call(self._messages[0]['contents'])
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         """

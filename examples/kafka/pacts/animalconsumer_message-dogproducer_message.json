@@ -1,0 +1,32 @@
+{
+  "consumer": {
+    "name": "AnimalConsumer_message"
+  },
+  "provider": {
+    "name": "DogProducer_message"
+  },
+  "messages": [
+    {
+      "description": "Spot the poodle",
+      "providerStates": [
+        {
+          "name": "A dog created",
+          "params": null
+        }
+      ],
+      "contents": "{\"type\": \"dog\", \"name\": \"spot\", \"breed\": \"poodle\"}",
+      "matchingRules": {
+        "body": {
+        }
+      },
+      "metaData": {
+        "Content-Type": "application/json"
+      }
+    }
+  ],
+  "metadata": {
+    "pactSpecification": {
+      "version": "3.0.0"
+    }
+  }
+}

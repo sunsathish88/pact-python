@@ -18,14 +18,31 @@ class Animal():
     def __str__(self):
         return f'Animal {self.type}, Name {self.name}, Breed {self.breed}'
 
-def object_decoder(obj):
-    if '__type__' in obj and obj['__type__'] == 'dog':
+class CustomError(Exception):
+    def __init__(self, *args):
+        if args:
+            self.topic = args[0]
+        else:
+            self.topic = None
+
+    def __str__(self):
+        if self.topic:
+            return 'Custom Error:, {0}'.format(self.topic)
+
+
+def message_decoder(obj):
+    if 'type' in obj and obj['type'] == 'dog':
         return Animal('dog', obj['name'], obj['breed'])
-    return obj
+    raise CustomError('type unknown')
+
+
+def send_dog_event_foo(foo, payload):
+    # ignoring foo here
+    return send_dog_event(payload)
 
 
 def send_dog_event(payload):
-    dog = json.loads(payload, object_hook=object_decoder)
+    dog = json.loads(payload, object_hook=message_decoder)
     print(dog)
     return dog
 
