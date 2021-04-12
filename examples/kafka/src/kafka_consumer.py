@@ -36,12 +36,13 @@ def message_decoder(obj):
     raise CustomError('type unknown')
 
 
-def send_dog_event_foo(foo, payload):
-    # ignoring foo here
-    return send_dog_event(payload)
+def receive_dog_event_foo(foo, payload):
+    # ignoring foo here - a more complicated interface. An example of
+    # not using the pact interface and testing events
+    return receive_dog_event(payload)
 
 
-def send_dog_event(payload):
+def receive_dog_event(payload):
     dog = json.loads(payload, object_hook=message_decoder)
     print(dog)
     return dog
@@ -56,7 +57,7 @@ def start_consumer(kafka_consumer, topic):
             if msg is None:
                 continue
             elif not msg.error():
-                send_dog_event(msg.value())
+                receive_dog_event(msg.value())
 
             elif msg.error().code() == KafkaError._PARTITION_EOF:
                 print('End of partition reached {0}/{1}'

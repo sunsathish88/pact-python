@@ -5,7 +5,7 @@ import pytest
 import json
 
 from pact import MessageConsumer, Provider
-from src.kafka_consumer import send_dog_event, send_dog_event_foo, CustomError
+from src.kafka_consumer import receive_dog_event, receive_dog_event_foo, CustomError
 
 log = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
@@ -45,7 +45,7 @@ def test_assert_verify_message(pact):
      .with_metadata({
          'Content-Type': 'application/json'
      })
-     .verify(send_dog_event)
+     .verify(receive_dog_event)
      )
 
 
@@ -59,7 +59,7 @@ def test_throw_exception_handler(pact):
             .with_metadata({
                 'Content-Type': 'application/json'
             })
-            .verify(send_dog_event))
+            .verify(receive_dog_event))
 
 
 def test_assert_dog_returned(pact):
@@ -71,7 +71,7 @@ def test_assert_dog_returned(pact):
      .with_metadata({
          'Content-Type': 'application/json'
      })
-     .verify(send_dog_event)
+     .verify(receive_dog_event)
      )
 
     with pact:
@@ -92,6 +92,6 @@ def test_assert_calling_dog(pact):
      )
 
     with pact:
-        dog = send_dog_event_foo({}, str(json.dumps(EXPECTED_DOG)))
+        dog = receive_dog_event_foo({}, str(json.dumps(EXPECTED_DOG)))
         assert dog.name == 'spot'
         assert dog.breed == 'poodle'

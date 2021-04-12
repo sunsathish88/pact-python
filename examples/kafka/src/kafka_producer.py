@@ -19,7 +19,7 @@ class Dog():
     def __init__(self):
         i = random.randint(0, len(NAMES)-1)
         j = random.randint(0, len(BREEDS)-1)
-        self.__type__ = 'dog'
+        self.type = 'dog'
         self.name = NAMES[i]
         self.breed = BREEDS[j]
 
