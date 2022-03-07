@@ -200,4 +200,4 @@ class PactGeneratePactFileTestCase(TestCase):
             '--pact-specification-version=3.0.0',
             '--consumer', 'TestConsumer',
             '--provider', 'TestProvider',
-        ]
+        ])
